@@ -10,6 +10,9 @@ dependencies = [
     "tzdata>=2026.6",
 ]
 
+[project.scripts]
+emporio = "emporio_agent.cli:main"
+
 [dependency-groups]
 dev = [
     "pytest>=8.0",
