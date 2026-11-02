@@ -7,7 +7,7 @@ more weight for words that are rare across the manual and a small
 penalty for very long sections.
 
 BM25 is implemented here (about 20 lines) instead of importing a
-library, because the library pulls numpy to rank 29 short sections.
+library, because the library pulls numpy to rank 25 short sections.
 
 Why not embeddings: the manual has 8 pages and a fixed vocabulary.
 BM25 needs no API key, no model download, runs offline and is easy to

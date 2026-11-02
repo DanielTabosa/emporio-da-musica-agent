@@ -75,7 +75,8 @@ def test_installment_value_is_rounded():
 def test_metro_shipping_rules():
     assert metro_shipping(500.01).is_free
     assert metro_shipping(500.01).cost == 0.0
-    # exactly 500 is not "above 500"
-    assert not metro_shipping(500).is_free
-    assert metro_shipping(499.9).cost == 35.0
+    # exactly R$500.00 is free (read in favor of the customer)
+    assert metro_shipping(500).is_free
+    assert not metro_shipping(499.99).is_free
+    assert metro_shipping(499.99).cost == 35.0
     assert metro_shipping(10).deadline == "1 a 3 dias úteis"

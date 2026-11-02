@@ -10,7 +10,7 @@ Rules come from the policy manual (data/politicas_da_loja.pdf):
   installment, 7x to 12x with a R$100 minimum installment.
   The table in section 3 says "12x, minimum installment R$100". We use
   the detailed rule from 3.1 and document the conflict in the README.
-- Section 5.1: metro region of Campo Grande, free shipping above R$500,
+- Section 5.1: metro region of Campo Grande, free shipping from R$500,
   flat R$35 below that, 1 to 3 business days.
 - Section 5.2: other cities use PAC, SEDEX or Jadlog. Price depends on
   the ZIP code and size, so the agent only informs deadlines.
@@ -24,7 +24,7 @@ from dataclasses import dataclass
 from decimal import ROUND_HALF_UP, Decimal
 
 PIX_DISCOUNT_PERCENT = 5
-METRO_FREE_SHIPPING_ABOVE = 500.0
+METRO_FREE_SHIPPING_FROM = 500.0
 METRO_SHIPPING_FEE = 35.0
 METRO_SHIPPING_DEADLINE = "1 a 3 dias úteis"
 MAX_INSTALLMENTS = 12
@@ -136,9 +136,10 @@ class MetroShipping:
 def metro_shipping(subtotal: float) -> MetroShipping:
     """Shipping inside the metro region of Campo Grande (section 5.1).
 
-    'Above R$500' is read literally: exactly R$500.00 still pays the fee.
+    The manual says free 'above R$500' and a fee 'below R$500', so exactly
+    R$500.00 is not covered. We read it in favor of the customer: free.
     """
-    free = subtotal > METRO_FREE_SHIPPING_ABOVE
+    free = subtotal >= METRO_FREE_SHIPPING_FROM
     return MetroShipping(
         cost=0.0 if free else METRO_SHIPPING_FEE,
         is_free=free,
